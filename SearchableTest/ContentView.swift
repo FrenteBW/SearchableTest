@@ -8,17 +8,25 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State private var text = ""
+    @State private var updatedPeoples: [People] = []
+    
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-        }
-        .padding()
-    }
-}
+            NavigationView {
+                List(text == "" ? peoples : updatedPeoples) {
+                    Text($0.name)
+                }
+            }
+            //.searchable(text: $text, placement: .navigationBarDrawer)
+            .searchable(text: $text, placement: .navigationBarDrawer(displayMode: .always))
+            //.searchable(text: $text, placement: .automatic)
 
-#Preview {
-    ContentView()
+             
+            .onChange(of: text) { searchValue in
+                updatedPeoples = peoples.filter { $0.name.contains(searchValue)}
+            }
+        }
+    }
 }
