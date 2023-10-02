@@ -15,18 +15,35 @@ struct ContentView: View {
     var body: some View {
         VStack {
             NavigationView {
-                List(text == "" ? peoples : updatedPeoples) {
-                    Text($0.name)
+                List(text == "" ? peoples : updatedPeoples) { data in
+                    NavigationLink {
+                        PeopleView(name: data.name)
+                    } label: {
+                        //Text($0.name)
+                        Text(data.name)
+                    }
                 }
+                .listStyle(.plain)
+                .navigationTitle("Searchable Test")
             }
             //.searchable(text: $text, placement: .navigationBarDrawer)
             .searchable(text: $text, placement: .navigationBarDrawer(displayMode: .always))
             //.searchable(text: $text, placement: .automatic)
-
-             
+            
+            
             .onChange(of: text) { searchValue in
                 updatedPeoples = peoples.filter { $0.name.contains(searchValue)}
             }
         }
     }
+}
+
+
+struct PeopleView: View {
+  var name: String
+  
+  var body: some View {
+    Text(name)
+  }
+    
 }
