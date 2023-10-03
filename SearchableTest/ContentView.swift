@@ -19,20 +19,16 @@ struct ContentView: View {
                     NavigationLink {
                         PeopleView(name: data.name)
                     } label: {
-                        //Text($0.name)
                         Text(data.name)
                     }
                 }
-                .listStyle(.plain)
+                .listStyle(DefaultListStyle())
                 .navigationTitle("Searchable Test")
             }
-            //.searchable(text: $text, placement: .navigationBarDrawer)
             .searchable(text: $text, placement: .navigationBarDrawer(displayMode: .always))
-            //.searchable(text: $text, placement: .automatic)
-            
             
             .onChange(of: text) { searchValue in
-                updatedPeoples = peoples.filter { $0.name.contains(searchValue)}
+                updatedPeoples = peoples.filter { $0.name.localizedStandardContains(searchValue)}
             }
         }
     }
@@ -40,10 +36,19 @@ struct ContentView: View {
 
 
 struct PeopleView: View {
-  var name: String
-  
-  var body: some View {
-    Text(name)
-  }
+    
+    var name: String
+
+    var body: some View {
+        Text(name)
+    }
     
 }
+
+struct People: Identifiable {
+    var id = UUID()
+    var name: String
+}
+
+
+var peoples = [People(name: "Seongbeom Ko"), People(name: "Byungjun An"), People(name: "Bokyung Kim"), People(name: "Jinwoo Jeon"), People(name: "Jongsung Lee"), People(name: "Hyungmo Yang"), People(name: "Changhoon Kwon"), People(name: "Kije Lee"), People(name: "Kihun Yeom"), People(name: "Sangmin Lee"), People(name: "Juchan Kim"), People(name: "Kozuka Kazuki")]
